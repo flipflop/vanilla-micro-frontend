@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Microfrontends Test</title>
+  </head>
+  <body>
+
+    <div id="root" data-url="react-app"></div>
+
+    <script>
+        var loadingPromises = [];
+
+        function loadApp(url) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script')
+                script.src = url;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script)
+            });
+        }
+
+        async function init() {
+
+            loadingPromises.push(
+                loadApp('https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js')
+            );
+
+            loadingPromises.push(
+                loadApp('https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js')
+            );
+            
+            Promise.all(loadingPromises)
+                .then(function(results) {
+                    // each result has a .value and a corresponding .source property
+                    console.log('promise fulfilled');
+                    loadApp('/app.js');
+                })    
+                .catch(function () {
+                    console.log("Promise Rejected");
+                });
+
+        }
+
+        init();
+
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"
+      integrity="sha384-LQJt2WYLVjqR6CtPmZ7RlCwSnRxagESW5PKN9LCewWq4KnCIZIQewStnUJ/KEc+w"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"
+      integrity="sha384-s7tOAUHnUBShLPptKaX9Zt4W4KPFr/mQ2TXWbxuY4TRv+7cl9zFzVPcR31MfzphO"
+      crossorigin="anonymous"></script>
+  </body>
+</html>
