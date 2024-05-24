@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Microfrontends Test</title>
+    <title>Roz's Vanilla JS Micro Frontends Test</title>
   </head>
   <body>
 
@@ -15,14 +15,17 @@
             return new Promise((resolve, reject) => {
                 const script = document.createElement('script')
                 script.src = url;
+                script.id = 'script-module';
                 script.onload = resolve;
                 script.onerror = reject;
+                // document.scripts.namedItem("script-module").text = 'console.log("got here!");';
+                script.textContent = 'alert(1)';
                 document.head.appendChild(script)
             });
         }
 
         async function init() {
-
+            // load library dependencies
             loadingPromises.push(
                 loadApp('https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js')
             );
@@ -35,7 +38,8 @@
                 .then(function(results) {
                     // each result has a .value and a corresponding .source property
                     console.log('promise fulfilled');
-                    loadApp('/app.js');
+                    loadApp('/bundle.js');
+                    // loadApp('https://terraflop.s3-ap-southeast-2.amazonaws.com/micro-micro-frontend/bundle.js');
                 })    
                 .catch(function () {
                     console.log("Promise Rejected");
@@ -46,13 +50,13 @@
         init();
 
     </script>
-    <script
+    <!-- <script
       src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"
       integrity="sha384-LQJt2WYLVjqR6CtPmZ7RlCwSnRxagESW5PKN9LCewWq4KnCIZIQewStnUJ/KEc+w"
       crossorigin="anonymous"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"
       integrity="sha384-s7tOAUHnUBShLPptKaX9Zt4W4KPFr/mQ2TXWbxuY4TRv+7cl9zFzVPcR31MfzphO"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"></script> -->
   </body>
 </html>
